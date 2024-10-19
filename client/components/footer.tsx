@@ -9,22 +9,16 @@ export default function Footer() {
         </p>
         <div className="flex space-x-6">
           <a
-            href="#"
+            href="https://github.com/maybegal"
             className="text-muted-foreground hover:text-primary transition-colors"
           >
             <Github className="w-5 h-5" />
           </a>
           <a
-            href="#"
+            href="https://x.com/maybegall"
             className="text-muted-foreground hover:text-primary transition-colors"
           >
             <Twitter className="w-5 h-5" />
-          </a>
-          <a
-            href="#"
-            className="text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Linkedin className="w-5 h-5" />
           </a>
         </div>
       </div>
