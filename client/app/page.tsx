@@ -1,101 +1,175 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [showSolution, setShowSolution] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const [followUpQuestion, setFollowUpQuestion] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    setShowResults(true);
+  };
+
+  const handleFollowUp = (event: React.FormEvent) => {
+    event.preventDefault();
+    // Here you would typically send the follow-up question to your AI backend
+    console.log("Follow-up question:", followUpQuestion);
+    setFollowUpQuestion("");
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-blue-100 to-white">
+      <main className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-center mb-8">
+          Codyra - Programming Question Solver
+        </h1>
+
+        <Card className="mb-8">
+          <CardHeader>
+            <CardTitle>Submit Your Question</CardTitle>
+            <CardDescription>
+              Get AI-powered explanations and solutions for your programming
+              questions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit}>
+              <div className="grid w-full items-center gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="language">Programming Language</Label>
+                  <Select>
+                    <SelectTrigger id="language">
+                      <SelectValue placeholder="Select a language" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      <SelectItem value="python">Python</SelectItem>
+                      <SelectItem value="javascript">JavaScript</SelectItem>
+                      <SelectItem value="cpp">C++</SelectItem>
+                      <SelectItem value="java">Java</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="question">Your Question</Label>
+                  <Textarea
+                    id="question"
+                    placeholder="Type your programming question here..."
+                  />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="notes">Additional Notes (Optional)</Label>
+                  <Textarea
+                    id="notes"
+                    placeholder="Any additional context or clarification..."
+                  />
+                </div>
+              </div>
+              <Button type="submit" className="mt-4">
+                Submit Question
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        {showResults && (
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle>AI-Generated Solution</CardTitle>
+              <CardDescription>Confidence Score: 85/100</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold">Brief Explanation:</h3>
+                  <p>
+                    This question relates to array manipulation in Python.
+                    Understanding list comprehension and basic loop structures
+                    is crucial for solving this problem efficiently.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Thought Process:</h3>
+                  <p>
+                    To approach this problem, we need to think about iterating
+                    through the array, checking each element against a
+                    condition, and constructing a new array based on that
+                    condition.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Improvement Tips:</h3>
+                  <p>
+                    Practice more with list comprehensions and consider time
+                    complexity when solving array problems. Try to solve this
+                    problem using both a for loop and a list comprehension to
+                    understand the differences.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold">Solution:</h3>
+                  {showSolution ? (
+                    <pre className="bg-gray-100 p-4 rounded-md">
+                      <code>
+                        {`# Using a for loop
+result = []
+for num in numbers:
+    if num % 2 == 0:
+        result.append(num * 2)
+    else:
+        result.append(num * 3)
+
+# Using list comprehension
+result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
+                      </code>
+                    </pre>
+                  ) : (
+                    <Button onClick={() => setShowSolution(true)}>
+                      Reveal Solution
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <form onSubmit={handleFollowUp} className="w-full">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="followup">Follow-up Question</Label>
+                  <div className="flex space-x-2">
+                    <Input
+                      id="followup"
+                      placeholder="Any additional questions?"
+                      value={followUpQuestion}
+                      onChange={(e) => setFollowUpQuestion(e.target.value)}
+                    />
+                    <Button type="submit">Ask</Button>
+                  </div>
+                </div>
+              </form>
+            </CardFooter>
+          </Card>
+        )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
     </div>
   );
 }
