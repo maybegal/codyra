@@ -66,7 +66,7 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
                 className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
                 <FileQuestion className="w-4 h-4" />
-                Your Question
+                The Question
               </Label>
               <Textarea
                 id="question"

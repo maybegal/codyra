@@ -16,14 +16,9 @@ import { GradeGauge } from "./grade-gauge";
 
 export default function AIInsight() {
   const [showSolution, setShowSolution] = useState(false);
+  const [showCodeSolution, setShowCodeSolution] = useState(false);
   const [followUpQuestion, setFollowUpQuestion] = useState("");
   const grade = 85; // This would typically come from your AI grading system
-
-  const handleFollowUp = (event: React.FormEvent) => {
-    event.preventDefault();
-    console.log("Follow-up question:", followUpQuestion);
-    setFollowUpQuestion("");
-  };
 
   return (
     <Card className="mb-24 bg-card shadow-lg">
@@ -31,7 +26,7 @@ export default function AIInsight() {
         <CardTitle className="text-2xl font-semibold text-primary-foreground flex items-center justify-between">
           <span className="flex items-center gap-2">
             <Zap className="w-6 h-6" />
-            AI-Crafted Insight
+            AI Feedback
           </span>
         </CardTitle>
       </CardHeader>
@@ -39,16 +34,13 @@ export default function AIInsight() {
         <div className="flex flex-col items-center mb-8">
           <GradeGauge grade={grade} size={250} />
           <div className="mt-4 flex items-center gap-4">
-            <span className="text-xl font-semibold text-primary-foreground">
-              Grade: {grade}
-            </span>
             <GradeExplanationModal grade={grade} />
           </div>
         </div>
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
             <Lightbulb className="w-5 h-5" />
-            Brief Illumination:
+            Concept Overview
           </h3>
           <p className="text-muted-foreground">
             This question delves into the realm of array manipulation in Python.
@@ -59,7 +51,7 @@ export default function AIInsight() {
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
             <Zap className="w-5 h-5" />
-            Thought Catalyst:
+            Problem-Solving Strategy
           </h3>
           <p className="text-muted-foreground">
             Envision a journey through the array, where each element is a
@@ -69,22 +61,31 @@ export default function AIInsight() {
         </div>
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
-            Ascension Steps:
+            <Code className="w-5 h-5" />
+            Solution
           </h3>
-          <p className="text-muted-foreground">
-            Immerse yourself in the art of list comprehensions. Contemplate the
-            time complexity as you navigate array problems. Challenge yourself
-            to solve this riddle using both a traditional for loop and the
-            elegant list comprehension to truly grasp their nuances.
-          </p>
+          {showSolution ? (
+            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
+              <code>
+                {`Use a loop to iterate over the numbers in the list. If the number is even, multiply it by 2. Otherwise, multiply it by 3.`}
+              </code>
+            </pre>
+          ) : (
+            <Button
+              onClick={() => setShowSolution(true)}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
+            >
+              <Code className="w-4 h-4" />
+              Solution
+            </Button>
+          )}
         </div>
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
             <Code className="w-5 h-5" />
-            Encoded Solution:
+            Code Solution
           </h3>
-          {showSolution ? (
+          {showCodeSolution ? (
             <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
               <code>
                 {`# Using a for loop
@@ -101,44 +102,27 @@ result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
             </pre>
           ) : (
             <Button
-              onClick={() => setShowSolution(true)}
+              onClick={() => setShowCodeSolution(true)}
               className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
             >
               <Code className="w-4 h-4" />
-              Unveil the Code
+              Code Solution
             </Button>
           )}
         </div>
+        <div>
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
+            Areas for Growth
+          </h3>
+          <p className="text-muted-foreground">
+            Immerse yourself in the art of list comprehensions. Contemplate the
+            time complexity as you navigate array problems. Challenge yourself
+            to solve this riddle using both a traditional for loop and the
+            elegant list comprehension to truly grasp their nuances.
+          </p>
+        </div>
       </CardContent>
-      <CardFooter>
-        <form onSubmit={handleFollowUp} className="w-full">
-          <div className="space-y-2">
-            <Label
-              htmlFor="followup"
-              className="text-sm font-medium text-primary-foreground flex items-center gap-2"
-            >
-              <Lightbulb className="w-4 h-4" />
-              Seek Further Enlightenment
-            </Label>
-            <div className="flex space-x-2">
-              <Input
-                id="followup"
-                placeholder="What other mysteries shall we unravel?"
-                value={followUpQuestion}
-                onChange={(e) => setFollowUpQuestion(e.target.value)}
-                className="bg-input border-input text-primary-foreground placeholder-muted-foreground flex-grow"
-              />
-              <Button
-                type="submit"
-                className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
-              >
-                <Send className="w-4 h-4" />
-                Ask
-              </Button>
-            </div>
-          </div>
-        </form>
-      </CardFooter>
     </Card>
   );
 }

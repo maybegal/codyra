@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Header from "@/components/header";
-import ChallengeForm from "@/components/problem-form";
-import AIInsight from "@/components/ai-insights";
+import ChallengeForm from "@/components/question-form";
+import AIInsight from "@/components/ai-feedback";
 import Footer from "@/components/footer";
 
 export default function Home() {
