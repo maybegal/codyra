@@ -10,10 +10,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Lightbulb, Zap, TrendingUp, Code, Send } from "lucide-react";
+import { GradeExplanationModal } from "./grade-explanation-modal";
+import { GradeGauge } from "./grade-gauge";
 
 export default function AIInsight() {
   const [showSolution, setShowSolution] = useState(false);
   const [followUpQuestion, setFollowUpQuestion] = useState("");
+  const grade = 85; // This would typically come from your AI grading system
 
   const handleFollowUp = (event: React.FormEvent) => {
     event.preventDefault();
@@ -24,16 +28,26 @@ export default function AIInsight() {
   return (
     <Card className="mb-24 bg-card shadow-lg">
       <CardHeader className="space-y-2">
-        <CardTitle className="text-2xl font-semibold text-primary-foreground">
-          AI-Crafted Insight
+        <CardTitle className="text-2xl font-semibold text-primary-foreground flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <Zap className="w-6 h-6" />
+            AI-Crafted Insight
+          </span>
         </CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Confidence Score: 85%
-        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
+        <div className="flex flex-col items-center mb-8">
+          <GradeGauge grade={grade} size={250} />
+          <div className="mt-4 flex items-center gap-4">
+            <span className="text-xl font-semibold text-primary-foreground">
+              Grade: {grade}
+            </span>
+            <GradeExplanationModal grade={grade} />
+          </div>
+        </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
+            <Lightbulb className="w-5 h-5" />
             Brief Illumination:
           </h3>
           <p className="text-muted-foreground">
@@ -43,7 +57,8 @@ export default function AIInsight() {
           </p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
+            <Zap className="w-5 h-5" />
             Thought Catalyst:
           </h3>
           <p className="text-muted-foreground">
@@ -53,7 +68,8 @@ export default function AIInsight() {
           </p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
+            <TrendingUp className="w-5 h-5" />
             Ascension Steps:
           </h3>
           <p className="text-muted-foreground">
@@ -64,7 +80,8 @@ export default function AIInsight() {
           </p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
+            <Code className="w-5 h-5" />
             Encoded Solution:
           </h3>
           {showSolution ? (
@@ -85,8 +102,9 @@ result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
           ) : (
             <Button
               onClick={() => setShowSolution(true)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
             >
+              <Code className="w-4 h-4" />
               Unveil the Code
             </Button>
           )}
@@ -97,8 +115,9 @@ result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
           <div className="space-y-2">
             <Label
               htmlFor="followup"
-              className="text-sm font-medium text-primary-foreground"
+              className="text-sm font-medium text-primary-foreground flex items-center gap-2"
             >
+              <Lightbulb className="w-4 h-4" />
               Seek Further Enlightenment
             </Label>
             <div className="flex space-x-2">
@@ -111,8 +130,9 @@ result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
               />
               <Button
                 type="submit"
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
               >
+                <Send className="w-4 h-4" />
                 Ask
               </Button>
             </div>

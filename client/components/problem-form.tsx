@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Code, FileQuestion, Paperclip, Zap, Terminal } from "lucide-react";
 
 export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
   return (
@@ -39,8 +40,9 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
             <div className="space-y-2">
               <Label
                 htmlFor="language"
-                className="text-sm font-medium text-primary-foreground"
+                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
+                <Terminal className="w-4 h-4" />
                 Programming Language
               </Label>
               <Select>
@@ -61,21 +63,24 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
             <div className="space-y-2">
               <Label
                 htmlFor="question"
-                className="text-sm font-medium text-primary-foreground"
+                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
+                <FileQuestion className="w-4 h-4" />
                 Your Question
               </Label>
               <Textarea
                 id="question"
                 placeholder="Type your programming question here..."
                 className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[120px]"
+                required
               />
             </div>
             <div className="space-y-2">
               <Label
                 htmlFor="notes"
-                className="text-sm font-medium text-primary-foreground"
+                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
+                <Paperclip className="w-4 h-4" />
                 Additional Notes (Optional)
               </Label>
               <Textarea
@@ -84,11 +89,27 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
                 className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[80px]"
               />
             </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="answer"
+                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
+              >
+                <Code className="w-4 h-4" />
+                Your Answer
+              </Label>
+              <Textarea
+                id="answer"
+                placeholder="Paste your code solution here..."
+                className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[120px] font-mono"
+                required
+              />
+            </div>
           </div>
           <Button
             type="submit"
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 flex items-center justify-center gap-2"
           >
+            <Zap className="w-4 h-4" />
             Illuminate Solution
           </Button>
         </form>
