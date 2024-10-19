@@ -6,7 +6,7 @@ export default function Header() {
         <span className="text-secondary">ra</span>
       </h1>
       <p className="text-xl text-muted-foreground">
-        Illuminating the Path to Programming Mastery
+        Lighting the Path to Better Coding Skills
       </p>
     </header>
   );

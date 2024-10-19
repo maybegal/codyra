@@ -77,20 +77,6 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
             </div>
             <div className="space-y-2">
               <Label
-                htmlFor="notes"
-                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
-              >
-                <Paperclip className="w-4 h-4" />
-                Additional Notes (Optional)
-              </Label>
-              <Textarea
-                id="notes"
-                placeholder="Any additional context or clarification..."
-                className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[80px]"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label
                 htmlFor="answer"
                 className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
@@ -102,6 +88,20 @@ export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
                 placeholder="Paste your code solution here..."
                 className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[120px] font-mono"
                 required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="notes"
+                className="text-sm font-medium text-primary-foreground flex items-center gap-2"
+              >
+                <Paperclip className="w-4 h-4" />
+                Additional Notes (Optional)
+              </Label>
+              <Textarea
+                id="notes"
+                placeholder="Any additional context or clarification..."
+                className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[80px]"
               />
             </div>
           </div>
