@@ -17,16 +17,13 @@ import {
 } from "@/components/ui/select";
 import { Code, FileQuestion, Paperclip, Zap, Terminal } from "lucide-react";
 
-export default function ChallengeForm({ onSubmit }: { onSubmit: () => void }) {
+export default function QuestionForm({ onSubmit }: { onSubmit: () => void }) {
   return (
     <Card className="mb-24 bg-card shadow-lg">
       <CardHeader className="space-y-2">
         <CardTitle className="text-2xl font-semibold text-primary-foreground">
-          Decode Your Challenge
+          Question
         </CardTitle>
-        <CardDescription className="text-muted-foreground">
-          Let our AI unravel your programming enigmas
-        </CardDescription>
       </CardHeader>
       <CardContent>
         <form

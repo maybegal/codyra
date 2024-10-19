@@ -14,7 +14,7 @@ import { Lightbulb, Zap, TrendingUp, Code, Send } from "lucide-react";
 import { GradeExplanationModal } from "./grade-explanation-modal";
 import { GradeGauge } from "./grade-gauge";
 
-export default function AIInsight() {
+export default function AIFeedback() {
   const [showSolution, setShowSolution] = useState(false);
   const [showCodeSolution, setShowCodeSolution] = useState(false);
   const [followUpQuestion, setFollowUpQuestion] = useState("");
@@ -24,10 +24,7 @@ export default function AIInsight() {
     <Card className="mb-24 bg-card shadow-lg">
       <CardHeader className="space-y-2">
         <CardTitle className="text-2xl font-semibold text-primary-foreground flex items-center justify-between">
-          <span className="flex items-center gap-2">
-            <Zap className="w-6 h-6" />
-            AI Feedback
-          </span>
+          <span className="flex items-center gap-2">AI Feedback</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -76,14 +73,14 @@ export default function AIInsight() {
               className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
             >
               <Code className="w-4 h-4" />
-              Solution
+              Reveal Solution
             </Button>
           )}
         </div>
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
             <Code className="w-5 h-5" />
-            Code Solution
+            Code Implementation
           </h3>
           {showCodeSolution ? (
             <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
@@ -106,14 +103,14 @@ result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
               className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
             >
               <Code className="w-4 h-4" />
-              Code Solution
+              Show Code
             </Button>
           )}
         </div>
         <div>
           <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
-            Areas for Growth
+            Growth Opportunities
           </h3>
           <p className="text-muted-foreground">
             Immerse yourself in the art of list comprehensions. Contemplate the
