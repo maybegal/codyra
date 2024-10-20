@@ -13,24 +13,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Code, FileQuestion, Paperclip, Zap, Terminal } from "lucide-react";
-import {
-  getGrade,
-  getOverview,
-  getStrategy,
-  getSolution,
-  getCodeSolution,
-  getGrowth,
-} from "@/lib/api";
+import { getFeedback } from "@/lib/api";
 
 interface QuestionFormProps {
-  onSubmit: (feedback: {
-    grade: number;
-    overview: string;
-    strategy: string;
-    solution: string;
-    codeSolution: string;
-    growth: string;
-  }) => void;
+  onSubmit: (feedback: { grade: number; content: string }) => void;
   onResetFeedback: () => void;
 }
 
@@ -60,17 +46,8 @@ export default function QuestionForm({
     };
 
     try {
-      const [grade, overview, strategy, solution, codeSolution, growth] =
-        await Promise.all([
-          getGrade(requestData),
-          getOverview(requestData),
-          getStrategy(requestData),
-          getSolution(requestData),
-          getCodeSolution(requestData),
-          getGrowth(requestData),
-        ]);
-
-      onSubmit({ grade, overview, strategy, solution, codeSolution, growth });
+      const feedback = await getFeedback(requestData);
+      onSubmit(feedback);
 
       // Scroll to the AI feedback section
       const aiFeedbackElement = document.getElementById("ai-feedback");
