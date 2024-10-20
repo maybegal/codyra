@@ -2,23 +2,37 @@
 
 import { useState } from "react";
 import Header from "@/components/header";
-import ChallengeForm from "@/components/question-form";
-import AIInsight from "@/components/ai-feedback";
+import QuestionForm from "@/components/question-form";
+import AIFeedback from "@/components/ai-feedback";
 import Footer from "@/components/footer";
 
 export default function Home() {
-  const [showResults, setShowResults] = useState(false);
+  const [feedback, setFeedback] = useState<{
+    grade: number;
+    overview: string;
+    strategy: string;
+    solution: string;
+    codeSolution: string;
+    growth: string;
+  } | null>(null);
 
-  const handleSubmit = () => {
-    setShowResults(true);
+  const handleSubmit = (newFeedback: {
+    grade: number;
+    overview: string;
+    strategy: string;
+    solution: string;
+    codeSolution: string;
+    growth: string;
+  }) => {
+    setFeedback(newFeedback);
   };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <main className="container mx-auto px-4 py-16 flex-grow">
         <Header />
-        <ChallengeForm onSubmit={handleSubmit} />
-        {showResults && <AIInsight />}
+        <QuestionForm onSubmit={handleSubmit} />
+        {feedback && <AIFeedback feedback={feedback} />}
       </main>
       <Footer />
     </div>

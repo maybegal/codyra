@@ -1,24 +1,58 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Lightbulb, Zap, TrendingUp, Code, Send } from "lucide-react";
-import { GradeExplanationModal } from "./grade-explanation-modal";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { GradeGauge } from "./grade-gauge";
+import { GradeExplanationModal } from "./grade-explanation-modal";
 
-export default function AIFeedback() {
-  const [showSolution, setShowSolution] = useState(false);
-  const [showCodeSolution, setShowCodeSolution] = useState(false);
-  const [followUpQuestion, setFollowUpQuestion] = useState("");
-  const grade = 85; // This would typically come from your AI grading system
+interface AIFeedbackProps {
+  feedback: {
+    grade: number;
+    overview: string;
+    strategy: string;
+    solution: string;
+    codeSolution: string;
+    growth: string;
+  };
+}
+
+export default function AIFeedback({ feedback }: AIFeedbackProps) {
+  const [displayedFeedback, setDisplayedFeedback] = useState({
+    grade: 0,
+    overview: "",
+    strategy: "",
+    solution: "",
+    codeSolution: "",
+    growth: "",
+  });
+
+  useEffect(() => {
+    const animateFeedback = async () => {
+      await animateText("grade", feedback.grade);
+      await animateText("overview", feedback.overview);
+      await animateText("strategy", feedback.strategy);
+      await animateText("solution", feedback.solution);
+      await animateText("codeSolution", feedback.codeSolution);
+      await animateText("growth", feedback.growth);
+    };
+
+    animateFeedback();
+  }, [feedback]);
+
+  const animateText = async (
+    key: keyof typeof feedback,
+    value: string | number
+  ) => {
+    if (typeof value === "number") {
+      for (let i = 0; i <= value; i++) {
+        setDisplayedFeedback((prev) => ({ ...prev, [key]: i }));
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+    } else {
+      for (let i = 0; i <= value.length; i++) {
+        setDisplayedFeedback((prev) => ({ ...prev, [key]: value.slice(0, i) }));
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+    }
+  };
 
   return (
     <Card className="mb-24 bg-card shadow-lg">
@@ -29,95 +63,42 @@ export default function AIFeedback() {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex flex-col items-center mb-8">
-          <GradeGauge grade={grade} size={250} />
+          <GradeGauge grade={displayedFeedback.grade} size={250} />
           <div className="mt-4 flex items-center gap-4">
-            <GradeExplanationModal grade={grade} />
+            <GradeExplanationModal grade={displayedFeedback.grade} />
           </div>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <Lightbulb className="w-5 h-5" />
-            Concept Overview
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+            Overview
           </h3>
-          <p className="text-muted-foreground">
-            This question delves into the realm of array manipulation in Python.
-            Mastery of list comprehension and fundamental loop structures is the
-            key to efficiently unlocking this problem.
-          </p>
+          <p className="text-muted-foreground">{displayedFeedback.overview}</p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <Zap className="w-5 h-5" />
-            Problem-Solving Strategy
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+            Strategy
           </h3>
-          <p className="text-muted-foreground">
-            Envision a journey through the array, where each element is a
-            checkpoint. At each stop, we must decide its fate based on a
-            condition, ultimately crafting a new array from these decisions.
-          </p>
+          <p className="text-muted-foreground">{displayedFeedback.strategy}</p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <Code className="w-5 h-5" />
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
             Solution
           </h3>
-          {showSolution ? (
-            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
-              <code>
-                {`Use a loop to iterate over the numbers in the list. If the number is even, multiply it by 2. Otherwise, multiply it by 3.`}
-              </code>
-            </pre>
-          ) : (
-            <Button
-              onClick={() => setShowSolution(true)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
-            >
-              <Code className="w-4 h-4" />
-              Reveal Solution
-            </Button>
-          )}
+          <p className="text-muted-foreground">{displayedFeedback.solution}</p>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <Code className="w-5 h-5" />
-            Code Implementation
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
+            Code Solution
           </h3>
-          {showCodeSolution ? (
-            <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
-              <code>
-                {`# Using a for loop
-result = []
-for num in numbers:
-    if num % 2 == 0:
-        result.append(num * 2)
-    else:
-        result.append(num * 3)
-
-# Using list comprehension
-result = [num * 2 if num % 2 == 0 else num * 3 for num in numbers]`}
-              </code>
-            </pre>
-          ) : (
-            <Button
-              onClick={() => setShowCodeSolution(true)}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
-            >
-              <Code className="w-4 h-4" />
-              Show Code
-            </Button>
-          )}
+          <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm text-muted-foreground">
+            <code>{displayedFeedback.codeSolution}</code>
+          </pre>
         </div>
         <div>
-          <h3 className="font-semibold text-primary-foreground text-lg mb-2 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
+          <h3 className="font-semibold text-primary-foreground text-lg mb-2">
             Growth Opportunities
           </h3>
-          <p className="text-muted-foreground">
-            Immerse yourself in the art of list comprehensions. Contemplate the
-            time complexity as you navigate array problems. Challenge yourself
-            to solve this riddle using both a traditional for loop and the
-            elegant list comprehension to truly grasp their nuances.
-          </p>
+          <p className="text-muted-foreground">{displayedFeedback.growth}</p>
         </div>
       </CardContent>
     </Card>
