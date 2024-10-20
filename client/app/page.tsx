@@ -27,11 +27,18 @@ export default function Home() {
     setFeedback(newFeedback);
   };
 
+  const handleResetFeedback = () => {
+    setFeedback(null);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <main className="container mx-auto px-4 py-16 flex-grow">
         <Header />
-        <QuestionForm onSubmit={handleSubmit} />
+        <QuestionForm
+          onSubmit={handleSubmit}
+          onResetFeedback={handleResetFeedback}
+        />
         {feedback && <AIFeedback feedback={feedback} />}
       </main>
       <Footer />
