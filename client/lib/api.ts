@@ -10,8 +10,10 @@ interface FeedbackResponse {
   content: string;
 }
 
-async function fetchFeedback(data: FeedbackRequest): Promise<FeedbackResponse> {
-  const response = await fetch(`https://codyra-api.vercel.app/feedback/`, {
+export async function getFeedback(
+  data: FeedbackRequest
+): Promise<FeedbackResponse> {
+  const response = await fetch("https://codyra-api.vercel.app/feedback/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,10 +27,4 @@ async function fetchFeedback(data: FeedbackRequest): Promise<FeedbackResponse> {
   }
 
   return response.json();
-}
-
-export async function getFeedback(
-  data: FeedbackRequest
-): Promise<FeedbackResponse> {
-  return fetchFeedback(data);
 }

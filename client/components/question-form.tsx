@@ -36,7 +36,7 @@ export default function QuestionForm({
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    onResetFeedback(); // Reset previous feedback
+    onResetFeedback();
 
     const requestData = {
       programming_language: programmingLanguage,
@@ -49,7 +49,6 @@ export default function QuestionForm({
       const feedback = await getFeedback(requestData);
       onSubmit(feedback);
 
-      // Scroll to the AI feedback section
       const aiFeedbackElement = document.getElementById("ai-feedback");
       if (aiFeedbackElement) {
         aiFeedbackElement.scrollIntoView({ behavior: "smooth" });

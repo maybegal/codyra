@@ -1,7 +1,16 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import { GradeGauge } from "./grade-gauge";
-import { GradeExplanationModal } from "./grade-explanation-modal";
+import ReactMarkdown from "react-markdown";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import remarkGfm from "remark-gfm";
 
 interface AIFeedbackProps {
   feedback: {
@@ -10,28 +19,31 @@ interface AIFeedbackProps {
   };
 }
 
-function formatFeedbackContent(content: string): JSX.Element {
-  const sections = content.split("\n\n");
-  return (
-    <>
-      {sections.map((section, index) => {
-        const [title, ...contentLines] = section.split("\n");
-        return (
-          <div key={index} className="mb-6">
-            <h3 className="font-semibold text-primary-foreground text-xl mb-2">
-              {title.replace("#", "").trim()}
-            </h3>
-            {contentLines.map((line, lineIndex) => (
-              <p key={lineIndex} className="text-muted-foreground mb-2">
-                {line.trim()}
-              </p>
-            ))}
-          </div>
-        );
-      })}
-    </>
-  );
-}
+const MarkdownComponents = {
+  code({ node, inline, className, children, ...props }: any) {
+    const match = /language-(\w+)/.exec(className || "");
+    return !inline && match ? (
+      <SyntaxHighlighter
+        style={atomDark}
+        language={match[1]}
+        PreTag="div"
+        {...props}
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    ) : (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+  h1: ({ children }: { children: React.ReactNode }) => (
+    <h2 className="text-2xl font-bold mt-6 mb-4">{children}</h2>
+  ),
+  h2: ({ children }: { children: React.ReactNode }) => (
+    <h3 className="text-xl font-semibold mt-4 mb-2">{children}</h3>
+  ),
+};
 
 export default function AIFeedback({ feedback }: AIFeedbackProps) {
   const [displayedFeedback, setDisplayedFeedback] = useState({
@@ -54,13 +66,14 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
     value: string | number
   ) => {
     if (typeof value === "number") {
-      for (let i = 0; i <= value; i++) {
-        setDisplayedFeedback((prev) => ({ ...prev, [key]: i }));
-        await new Promise((resolve) => setTimeout(resolve, 20));
-      }
+      setDisplayedFeedback((prev) => ({ ...prev, [key]: value }));
     } else {
-      for (let i = 0; i <= value.length; i++) {
-        setDisplayedFeedback((prev) => ({ ...prev, [key]: value.slice(0, i) }));
+      const words = value.split(" ");
+      for (let i = 0; i <= words.length; i++) {
+        setDisplayedFeedback((prev) => ({
+          ...prev,
+          [key]: words.slice(0, i).join(" "),
+        }));
         await new Promise((resolve) => setTimeout(resolve, 20));
       }
     }
@@ -75,13 +88,24 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex flex-col items-center mb-8">
-          <GradeGauge grade={displayedFeedback.grade} size={250} />
-          <div className="mt-4 flex items-center gap-4">
-            <GradeExplanationModal grade={displayedFeedback.grade} />
-          </div>
+          <GradeGauge grade={displayedFeedback.grade} />
+          <div className="mt-4 flex items-center gap-4"></div>
         </div>
-        {formatFeedbackContent(displayedFeedback.content)}
+        <div className="prose prose-invert max-w-none">
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={MarkdownComponents}
+          >
+            {displayedFeedback.content}
+          </ReactMarkdown>
+        </div>
       </CardContent>
+      <CardFooter className="text-sm text-muted-foreground">
+        <p>
+          Model: GPT-4 | Date: {new Date().toLocaleDateString()} | Codyra
+          Version: 1.0
+        </p>
+      </CardFooter>
     </Card>
   );
 }
