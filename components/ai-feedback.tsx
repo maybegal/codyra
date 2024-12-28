@@ -19,8 +19,14 @@ interface AIFeedbackProps {
   };
 }
 
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
+
 const MarkdownComponents = {
-  code({ node, inline, className, children, ...props }: any) {
+  code({ inline, className, children, ...props }: CodeProps) {
     const match = /language-(\w+)/.exec(className || "");
     return !inline && match ? (
       <SyntaxHighlighter
@@ -52,7 +58,24 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
   });
 
   useEffect(() => {
-    setDisplayedFeedback({ grade: 0, content: "" });
+    const animateText = async (
+      key: keyof typeof feedback,
+      value: string | number
+    ) => {
+      if (typeof value === "number") {
+        setDisplayedFeedback((prev) => ({ ...prev, [key]: value }));
+      } else {
+        const words = value.split(" ");
+        for (let i = 0; i <= words.length; i++) {
+          setDisplayedFeedback((prev) => ({
+            ...prev,
+            [key]: words.slice(0, i).join(" "),
+          }));
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        }
+      }
+    };
+
     const animateFeedback = async () => {
       await animateText("grade", feedback.grade);
       await animateText("content", feedback.content);
@@ -60,24 +83,6 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
 
     animateFeedback();
   }, [feedback]);
-
-  const animateText = async (
-    key: keyof typeof feedback,
-    value: string | number
-  ) => {
-    if (typeof value === "number") {
-      setDisplayedFeedback((prev) => ({ ...prev, [key]: value }));
-    } else {
-      const words = value.split(" ");
-      for (let i = 0; i <= words.length; i++) {
-        setDisplayedFeedback((prev) => ({
-          ...prev,
-          [key]: words.slice(0, i).join(" "),
-        }));
-        await new Promise((resolve) => setTimeout(resolve, 20));
-      }
-    }
-  };
 
   return (
     <Card id="ai-feedback" className="mb-24 bg-card shadow-lg">
