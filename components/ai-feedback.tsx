@@ -1,11 +1,6 @@
-import { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import {Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card";
 import { GradeGauge } from "./grade-gauge";
 
 interface AIFeedbackProps {
@@ -16,9 +11,11 @@ interface AIFeedbackProps {
     solution: string;
     code_solution: string;
     growth_opportunities: string;
+    model: string;
+    date: string;
+    version: string;
   };
 }
-
 
 export default function AIFeedback({ feedback }: AIFeedbackProps) {
   const [displayedFeedback, setDisplayedFeedback] = useState({
@@ -28,6 +25,9 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
     solution: "",
     code_solution: "",
     growth_opportunities: "",
+    model: feedback.model,
+    date: feedback.date,
+    version: feedback.version,
   });
 
   useEffect(() => {
@@ -75,21 +75,21 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
         </div>
         <div className="prose prose-invert max-w-none">
           <h2>Overview</h2>
-          <p>{displayedFeedback.overview}</p>
+          <ReactMarkdown>{displayedFeedback.overview}</ReactMarkdown>
           <h2>Strategy</h2>
-          <p>{displayedFeedback.strategy}</p>
+          <ReactMarkdown>{displayedFeedback.strategy}</ReactMarkdown>
           <h2>Solution</h2>
-          <p>{displayedFeedback.solution}</p>
+          <ReactMarkdown>{displayedFeedback.solution}</ReactMarkdown>
           <h2>Code Solution</h2>
-          <pre>{displayedFeedback.code_solution}</pre>
+          <pre><ReactMarkdown>{displayedFeedback.code_solution}</ReactMarkdown></pre>
           <h2>Growth Opportunities</h2>
-          <p>{displayedFeedback.growth_opportunities}</p>
+          <ReactMarkdown>{displayedFeedback.growth_opportunities}</ReactMarkdown>
         </div>
       </CardContent>
       <CardFooter className="text-sm text-muted-foreground">
         <p>
-          Model: GPT-4 | Date: {new Date().toLocaleDateString()} | Codyra
-          Version: 1.0
+          Model: {displayedFeedback.model} | Date: {displayedFeedback.date} | Codyra
+          Version: {displayedFeedback.version}
         </p>
       </CardFooter>
     </Card>
