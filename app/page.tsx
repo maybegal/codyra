@@ -9,10 +9,20 @@ import Footer from "@/components/footer";
 export default function Home() {
   const [feedback, setFeedback] = useState<{
     grade: number;
-    content: string;
+    overview: string;
+    strategy: string;
+    solution: string;
+    code_solution: string;
+    growth_opportunities: string;
   } | null>(null);
 
-  const handleSubmit = (newFeedback: { grade: number; content: string }) => {
+  const handleSubmit = (newFeedback: {
+    grade: number;
+    overview: string;
+    strategy: string;
+    solution: string;
+    code_solution: string;
+    growth_opportunities: string; }) => {
     setFeedback(newFeedback);
   };
 
