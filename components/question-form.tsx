@@ -16,7 +16,14 @@ import { Code, FileQuestion, Paperclip, Zap, Terminal } from "lucide-react";
 import { getFeedback } from "@/lib/api";
 
 interface QuestionFormProps {
-  onSubmit: (feedback: { grade: number; content: string }) => void;
+  onSubmit: (feedback: {
+    grade: number;
+    overview: string;
+    strategy: string;
+    solution: string;
+    code_solution: string;
+    growth_opportunities: string;
+  }) => void;
   onResetFeedback: () => void;
 }
 
