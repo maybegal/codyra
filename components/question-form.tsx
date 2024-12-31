@@ -23,6 +23,9 @@ interface QuestionFormProps {
     solution: string;
     code_solution: string;
     growth_opportunities: string;
+    model: string;
+    date: string;
+    version: string;
   }) => void;
   onResetFeedback: () => void;
 }
