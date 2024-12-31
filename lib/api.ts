@@ -26,9 +26,8 @@ export async function getFeedback(
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.detail || "Failed to fetch feedback");
+    throw new Error("Failed to fetch feedback");
   }
-  console.log(response.json());
+
   return response.json();
 }
