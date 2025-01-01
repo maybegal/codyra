@@ -11,9 +11,10 @@ export default function Home() {
     grade: number;
     overview: string;
     strategy: string;
+    growth_opportunities: string;
     solution: string;
     code_solution: string;
-    growth_opportunities: string;
+    programming_language: string;
     model: string;
     date: string;
     version: string;
@@ -23,9 +24,10 @@ export default function Home() {
     grade: number;
     overview: string;
     strategy: string;
+    growth_opportunities: string;
     solution: string;
     code_solution: string;
-    growth_opportunities: string;
+    programming_language: string;
     model: string;
     date: string;
     version: string; }) => {
