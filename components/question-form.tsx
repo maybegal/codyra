@@ -21,9 +21,10 @@ interface QuestionFormProps {
     grade: number;
     overview: string;
     strategy: string;
+    growth_opportunities: string;
     solution: string;
     code_solution: string;
-    growth_opportunities: string;
+    programming_language: string;
     model: string;
     date: string;
     version: string;
@@ -192,6 +193,7 @@ def expand_around_center(s, left, right):
                 value={answer}
                 onChange={(value) => setAnswer(value || "")}
                 theme="vs-dark"
+                options={{ minimap: { enabled: false } }}
               />
             </div>
             <div className="space-y-2">

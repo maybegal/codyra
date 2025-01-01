@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import {Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card";
 import { GradeGauge } from "./grade-gauge";
+import Editor from "@monaco-editor/react";
+
 
 interface AIFeedbackProps {
   feedback: {
     grade: number;
     overview: string;
     strategy: string;
+    growth_opportunities: string;
     solution: string;
     code_solution: string;
-    growth_opportunities: string;
+    programming_language: string;
     model: string;
     date: string;
     version: string;
@@ -19,12 +22,13 @@ interface AIFeedbackProps {
 
 export default function AIFeedback({ feedback }: AIFeedbackProps) {
   const [displayedFeedback, setDisplayedFeedback] = useState({
-    grade: 0,
-    overview: "",
-    strategy: "",
-    solution: "",
-    code_solution: "",
-    growth_opportunities: "",
+    grade: feedback.grade,
+    overview: feedback.overview,
+    strategy: feedback.strategy,
+    growth_opportunities: feedback.growth_opportunities,
+    solution: feedback.solution,
+    code_solution: feedback.code_solution,
+    programming_language: feedback.programming_language,
     model: feedback.model,
     date: feedback.date,
     version: feedback.version,
@@ -53,9 +57,9 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
       await animateText("grade", feedback.grade);
       await animateText("overview", feedback.overview);
       await animateText("strategy", feedback.strategy);
+      await animateText("growth_opportunities", feedback.growth_opportunities);
       await animateText("solution", feedback.solution);
       await animateText("code_solution", feedback.code_solution);
-      await animateText("growth_opportunities", feedback.growth_opportunities);
     };
 
     animateFeedback();
@@ -78,12 +82,23 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
           <ReactMarkdown>{displayedFeedback.overview}</ReactMarkdown>
           <h2>Strategy</h2>
           <ReactMarkdown>{displayedFeedback.strategy}</ReactMarkdown>
+          <h2>Growth Opportunities</h2>
+          <ReactMarkdown>{displayedFeedback.growth_opportunities}</ReactMarkdown>
           <h2>Solution</h2>
           <ReactMarkdown>{displayedFeedback.solution}</ReactMarkdown>
           <h2>Code Solution</h2>
-          <pre><ReactMarkdown>{displayedFeedback.code_solution}</ReactMarkdown></pre>
-          <h2>Growth Opportunities</h2>
-          <ReactMarkdown>{displayedFeedback.growth_opportunities}</ReactMarkdown>
+          <div style={{ height: "400px", width: "100%" }}>
+            <Editor
+              height="100%"
+              language={displayedFeedback.programming_language}
+              theme="vs-dark"
+              value={displayedFeedback.code_solution}
+              options={{
+                readOnly: true,
+                minimap: { enabled: false },
+              }}
+            />
+          </div>
         </div>
       </CardContent>
       <CardFooter className="text-sm text-muted-foreground">
