@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Code, FileQuestion, Paperclip, Zap, Terminal } from "lucide-react";
 import { getFeedback } from "@/lib/api";
+import Editor from "@monaco-editor/react";
 
 interface QuestionFormProps {
   onSubmit: (feedback: {
@@ -34,13 +35,63 @@ export default function QuestionForm({
   onSubmit,
   onResetFeedback,
 }: QuestionFormProps) {
-  const [programmingLanguage, setProgrammingLanguage] = useState("");
+  const [programmingLanguage, setProgrammingLanguage] = useState("python");
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [answer, setAnswer] = useState(
+`E.g., 
+def longest_palindrome(s):
+    if not s:
+        return ""
+    
+    start, max_len = 0, 1
+    for i in range(len(s)):
+        len1 = expand_around_center(s, i, i)
+        len2 = expand_around_center(s, i, i + 1)
+        length = max(len1, len2)
+        if length > max_len:
+            start = i - (length - 1) // 2
+            max_len = length
+    
+    return s[start:start + max_len]
+
+def expand_around_center(s, left, right):
+    while left >= 0 and right < len(s) and s[left] == s[right]:
+        left -= 1
+        right += 1
+    return right - left - 1`
+  );
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
+
+  const languageMap = {
+    "Assembly": "asm",
+    "C#": "csharp",
+    "C++": "cpp",
+    "C": "c",
+    "F#": "fsharp",
+    "Go": "go",
+    "GraphQL": "graphql",
+    "Haskell": "haskell",
+    "HTML": "html",
+    "Java": "java",
+    "JavaScript": "javascript",
+    "Kotlin": "kotlin",
+    "Lua": "lua",
+    "MATLAB": "matlab",
+    "Pascal": "pascal",
+    "Perl": "perl",
+    "PHP": "php",
+    "Python": "python",
+    "R": "r",
+    "Ruby": "ruby",
+    "Rust": "rust",
+    "Scala": "scala",
+    "SQL": "sql",
+    "Swift": "swift",
+    "TypeScript": "typescript",
+  };  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,31 +152,11 @@ export default function QuestionForm({
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Languages</SelectLabel>
-                    <SelectItem value="python">Python</SelectItem>
-                    <SelectItem value="javascript">JavaScript</SelectItem>
-                    <SelectItem value="typescript">TypeScript</SelectItem>
-                    <SelectItem value="java">Java</SelectItem>
-                    <SelectItem value="csharp">C#</SelectItem>
-                    <SelectItem value="cpp">C++</SelectItem>
-                    <SelectItem value="go">Go</SelectItem>
-                    <SelectItem value="rust">Rust</SelectItem>
-                    <SelectItem value="swift">Swift</SelectItem>
-                    <SelectItem value="kotlin">Kotlin</SelectItem>
-                    <SelectItem value="ruby">Ruby</SelectItem>
-                    <SelectItem value="php">PHP</SelectItem>
-                  </SelectGroup>
-                  <SelectGroup>
-                    <SelectLabel>Frameworks</SelectLabel>
-                    <SelectItem value="react">React</SelectItem>
-                    <SelectItem value="angular">Angular</SelectItem>
-                    <SelectItem value="vue">Vue.js</SelectItem>
-                    <SelectItem value="django">Django</SelectItem>
-                    <SelectItem value="flask">Flask</SelectItem>
-                    <SelectItem value="spring">Spring</SelectItem>
-                    <SelectItem value="aspnet">ASP.NET</SelectItem>
-                    <SelectItem value="express">Express.js</SelectItem>
-                    <SelectItem value="laravel">Laravel</SelectItem>
-                    <SelectItem value="rails">Ruby on Rails</SelectItem>
+                    {Object.entries(languageMap).map(([displayName, value]) => (
+                      <SelectItem key={value} value={value}>
+                        {displayName}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -153,35 +184,14 @@ export default function QuestionForm({
                 className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
                 <Code className="w-4 h-4" />
-                Your Answer
+                Your Code Answer
               </Label>
-              <Textarea
-                id="answer"
-                placeholder={`E.g., 
-def longest_palindrome(s):
-    if not s:
-        return ""
-    
-    start, max_len = 0, 1
-    for i in range(len(s)):
-        len1 = expand_around_center(s, i, i)
-        len2 = expand_around_center(s, i, i + 1)
-        length = max(len1, len2)
-        if length > max_len:
-            start = i - (length - 1) // 2
-            max_len = length
-    
-    return s[start:start + max_len]
-
-def expand_around_center(s, left, right):
-    while left >= 0 and right < len(s) and s[left] == s[right]:
-        left -= 1
-        right += 1
-    return right - left - 1`}
-                className="bg-input border-input text-primary-foreground placeholder-muted-foreground min-h-[300px] font-mono"
-                required
+              <Editor
+                height="400px"
+                language={programmingLanguage || "plaintext"}
                 value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
+                onChange={(value) => setAnswer(value || "")}
+                theme="vs-dark"
               />
             </div>
             <div className="space-y-2">
