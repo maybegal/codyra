@@ -21,7 +21,7 @@ interface FeedbackResponse {
 export async function getFeedback(
   data: FeedbackRequest
 ): Promise<FeedbackResponse> {
-  const response = await fetch("https://codyra-api.vercel.app/", {
+  const response = await fetch("https://codyra-api.vercel.app/feedback/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
