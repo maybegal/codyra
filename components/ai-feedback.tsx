@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
-import {Card, CardContent, CardHeader, CardTitle, CardFooter} from "@/components/ui/card";
-import { GradeGauge } from "./grade-gauge";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { Lightbulb, Target, TrendingUp, Puzzle, Code } from 'lucide-react';
 import Editor from "@monaco-editor/react";
-
+import { cn } from "@/lib/utils";
+import { GradeGauge } from "./grade-gauge";
 
 interface AIFeedbackProps {
   feedback: {
@@ -18,6 +20,29 @@ interface AIFeedbackProps {
     date: string;
     version: string;
   };
+}
+
+interface FeedbackSectionProps {
+  icon: React.ReactNode;
+  title: string;
+  content: React.ReactNode;
+}
+
+function FeedbackSection({ icon, title, content }: FeedbackSectionProps) {
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center space-x-3">
+        <div className="p-2 bg-secondary rounded-md">
+          {icon}
+        </div>
+        <h2 className="text-xl font-semibold">{title}</h2>
+      </div>
+      <div className={cn("prose prose-invert max-w-none", 
+        typeof content === 'string' ? "pl-11" : "")}>
+        {typeof content === 'string' ? <ReactMarkdown>{content}</ReactMarkdown> : content}
+      </div>
+    </div>
+  );
 }
 
 export default function AIFeedback({ feedback }: AIFeedbackProps) {
@@ -68,37 +93,52 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
   return (
     <Card id="ai-feedback" className="mb-24 bg-card shadow-lg">
       <CardHeader className="space-y-2">
-        <CardTitle className="text-2xl font-semibold text-primary-foreground flex items-center justify-between">
-          AI Feedback
-        </CardTitle>
+        <CardTitle className="text-3xl font-bold">AI Feedback</CardTitle>
+        <Separator />
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="flex flex-col items-center mb-8">
+      <CardContent className="space-y-10">
+        <div className="flex justify-center">
           <GradeGauge grade={displayedFeedback.grade} />
-          <div className="mt-4 flex items-center gap-4"></div>
         </div>
-        <div className="prose prose-invert max-w-none">
-          <h2>Overview</h2>
-          <ReactMarkdown>{displayedFeedback.overview}</ReactMarkdown>
-          <h2>Strategy</h2>
-          <ReactMarkdown>{displayedFeedback.strategy}</ReactMarkdown>
-          <h2>Growth Opportunities</h2>
-          <ReactMarkdown>{displayedFeedback.growth_opportunities}</ReactMarkdown>
-          <h2>Solution</h2>
-          <ReactMarkdown>{displayedFeedback.solution}</ReactMarkdown>
-          <h2>Code Solution</h2>
-          <div style={{ height: "400px", width: "100%" }}>
-            <Editor
-              height="100%"
-              language={displayedFeedback.programming_language}
-              theme="vs-dark"
-              value={displayedFeedback.code_solution}
-              options={{
-                readOnly: true,
-                minimap: { enabled: false },
-              }}
-            />
-          </div>
+        <div className="space-y-8">
+          <FeedbackSection
+            icon={<Lightbulb className="w-5 h-5" />}
+            title="Overview"
+            content={displayedFeedback.overview}
+          />
+          <FeedbackSection
+            icon={<Target className="w-5 h-5" />}
+            title="Strategy"
+            content={displayedFeedback.strategy}
+          />
+          <FeedbackSection
+            icon={<TrendingUp className="w-5 h-5" />}
+            title="Growth Opportunities"
+            content={displayedFeedback.growth_opportunities}
+          />
+          <FeedbackSection
+            icon={<Puzzle className="w-5 h-5" />}
+            title="Solution"
+            content={displayedFeedback.solution}
+          />
+          <FeedbackSection
+            icon={<Code className="w-5 h-5" />}
+            title="Code Solution"
+            content={
+              <div className="h-[400px] w-full mt-4">
+                <Editor
+                  height="100%"
+                  language={displayedFeedback.programming_language}
+                  theme="vs-dark"
+                  value={displayedFeedback.code_solution}
+                  options={{
+                    readOnly: true,
+                    minimap: { enabled: false },
+                  }}
+                />
+              </div>
+            }
+          />
         </div>
       </CardContent>
       <CardFooter className="text-sm text-muted-foreground">
@@ -110,3 +150,4 @@ export default function AIFeedback({ feedback }: AIFeedbackProps) {
     </Card>
   );
 }
+
