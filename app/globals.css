@@ -28,6 +28,8 @@ body {
     --input: 240 4% 16%;
     --ring: 263 70% 50%;
     --radius: 0.5rem;
+    
+    color-scheme: dark;
   }
 }
 
