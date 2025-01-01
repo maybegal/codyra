@@ -21,17 +21,23 @@ interface FeedbackResponse {
 export async function getFeedback(
   data: FeedbackRequest
 ): Promise<FeedbackResponse> {
-  const response = await fetch("https://codyra-api.vercel.app/feedback/", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const response = await fetch("https://codyra-api.vercel.app/feedback/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch feedback");
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Failed to fetch feedback: ${errorData.message || response.statusText}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching feedback:", error);
+    throw new Error("An error occurred while fetching feedback. Please try again later.");
   }
-
-  return response.json();
 }
