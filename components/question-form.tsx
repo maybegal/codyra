@@ -141,14 +141,14 @@ def expand_around_center(s, left, right):
                 className="text-sm font-medium text-primary-foreground flex items-center gap-2"
               >
                 <Terminal className="w-4 h-4" />
-                Programming Language or Framework
+                Programming Language
               </Label>
               <Select onValueChange={setProgrammingLanguage} required>
                 <SelectTrigger
                   id="programming_language"
                   className="bg-input border-input text-primary-foreground"
                 >
-                  <SelectValue placeholder="Select a language or framework" />
+                  <SelectValue placeholder="Select a language" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
